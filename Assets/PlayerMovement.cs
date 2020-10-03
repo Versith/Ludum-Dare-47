@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed = 12f;
     [SerializeField] private float _gravity = -9.81f;
     [SerializeField] private float _jumpHeight = 3f;
+    [SerializeField] private float _coyoteTime = 0.1f;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundDistance = 0.4f;
     [SerializeField] private LayerMask _groundMask;
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _velocity;
     private bool isGrounded;
+    private float _lastPlatformExit;
 
     // Start is called before the first frame update
     void Start()
@@ -27,9 +29,14 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(_groundCheck.position, _groundDistance, _groundMask);
 
+        if(isGrounded)
+        {
+            _lastPlatformExit = Time.time;
+        }
+
         if(isGrounded && _velocity.y < 0)
         {
-            _velocity.y = -1f;
+            _velocity.y = -5f;
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -39,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
         _controller.Move(move * _moveSpeed * Time.deltaTime);
 
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if(Input.GetButtonDown("Jump") && (Time.time < _lastPlatformExit + _coyoteTime))
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
         }
