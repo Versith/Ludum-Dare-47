@@ -24,8 +24,8 @@ public class PortalTextrureSetup : MonoBehaviour
         cameraPortal1.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
         cameraPortal2.targetTexture = new RenderTexture(Screen.width, Screen.height, 24);
 
-        camera1Mat.mainTexture = cameraPortal1.targetTexture;
-        camera2Mat.mainTexture = cameraPortal2.targetTexture;
+        camera1Mat.mainTexture = cameraPortal2.targetTexture;
+        camera2Mat.mainTexture = cameraPortal1.targetTexture;
     }
 
 }
