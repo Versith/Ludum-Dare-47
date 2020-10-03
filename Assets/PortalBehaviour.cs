@@ -9,6 +9,7 @@ public class PortalBehaviour : MonoBehaviour
     public Transform playerCamera;
     public Transform portal;
     public Transform otherPortal;
+    public Transform camera;
 
     private void Update()
     {
@@ -20,13 +21,18 @@ public class PortalBehaviour : MonoBehaviour
         Vector3 oppositeNormalOfOtherPortal = otherPortal.transform.up;
         //We reflect at the negative normal of the portal surface
         Vector3 reflectedPosition = -Vector3.Reflect(localPlayerPosition, oppositeNormalOfOtherPortal);
-        transform.position = portal.TransformPoint(reflectedPosition);
+        camera.transform.position = portal.TransformPoint(reflectedPosition);
 
         //We take the forward vector of the players camera in the other portals local space and apply the the negative forward direction
         //to this portals camera. Only the y component of the forward vector isn't changed to prevent vertical view inversion.
         Vector3 playerCamForwardLocal = otherPortal.InverseTransformVector(playerCamera.forward);
         Vector3 newForward = -portal.transform.TransformVector(playerCamForwardLocal);
-        transform.forward = new Vector3(newForward.x, -newForward.y, newForward.z);
+        camera.transform.forward = new Vector3(newForward.x, -newForward.y, newForward.z);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Trigger enter");
     }
 
 }
