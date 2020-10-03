@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 12f;
     [SerializeField] private float _gravity = -9.81f;
+    [SerializeField] private float _jumpHeight = 3f;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundDistance = 0.4f;
     [SerializeField] private LayerMask _groundMask;
@@ -37,6 +38,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
 
         _controller.Move(move * _moveSpeed * Time.deltaTime);
+
+        if(Input.GetButtonDown("Jump") && isGrounded)
+        {
+            _velocity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
+        }
 
         _velocity.y += _gravity * Time.deltaTime;
 
