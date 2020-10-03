@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _velocity;
     private bool isGrounded = false;
     private float _lastPlatformExit;
+    private float _baseSlopeLimit;
 
     private bool isPushed = false;
     private Vector3 _pushDirection;
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _controller = transform.GetComponent<CharacterController>();
+        _baseSlopeLimit = _controller.slopeLimit;
     }
 
     // Update is called once per frame
@@ -36,6 +38,11 @@ public class PlayerMovement : MonoBehaviour
         if(isGrounded)
         {
             _lastPlatformExit = Time.time;
+            _controller.slopeLimit = _baseSlopeLimit;
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
         }
 
         if(isGrounded && _velocity.y < 0)
@@ -65,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonDown("Jump") && (Time.time < _lastPlatformExit + _coyoteTime))
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
+            _controller.slopeLimit = 90;
         }
 
         _velocity.y += _gravity * Time.deltaTime;
