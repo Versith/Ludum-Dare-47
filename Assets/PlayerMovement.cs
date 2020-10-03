@@ -15,8 +15,12 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _controller;
 
     private Vector3 _velocity;
-    private bool isGrounded;
+    private bool isGrounded = false;
     private float _lastPlatformExit;
+
+    private bool isPushed = false;
+    private Vector3 _pushDirection;
+    private float _pushForce;
 
     // Start is called before the first frame update
     void Start()
@@ -36,15 +40,27 @@ public class PlayerMovement : MonoBehaviour
 
         if(isGrounded && _velocity.y < 0)
         {
-            _velocity.y = -5f;
+            _velocity.y = -2f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        if(isPushed)
+        {
+            _controller.Move(_pushDirection * _pushForce * Time.deltaTime);
+            _pushForce -= 1;
+            if(_pushForce <= 0)
+            {
+                isPushed = false;
+            }
+        }
+        else
+        {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
+            Vector3 move = transform.right * x + transform.forward * z;
 
-        _controller.Move(move * _moveSpeed * Time.deltaTime);
+            _controller.Move(move * _moveSpeed * Time.deltaTime);
+        }
 
         if(Input.GetButtonDown("Jump") && (Time.time < _lastPlatformExit + _coyoteTime))
         {
@@ -54,5 +70,12 @@ public class PlayerMovement : MonoBehaviour
         _velocity.y += _gravity * Time.deltaTime;
 
         _controller.Move(_velocity * Time.deltaTime);
+    }
+
+    public void GetPushed(Vector3 direction, float force)
+    {
+        isPushed = true;
+        _pushDirection = direction;
+        _pushForce = force;
     }
 }

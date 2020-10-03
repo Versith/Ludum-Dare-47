@@ -21,7 +21,7 @@ public class PathFollower : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(_behaviour == "Loop")
         {
