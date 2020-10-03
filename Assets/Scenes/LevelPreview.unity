@@ -6771,6 +6771,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2280158511966635236, guid: 70ef143766d048a4fab26a857aeea7ba,
+        type: 3}
+      propertyPath: _coyoteTime
+      value: 0.23
+      objectReference: {fileID: 0}
     - target: {fileID: 2280158511966635237, guid: 70ef143766d048a4fab26a857aeea7ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6824,6 +6829,16 @@ PrefabInstance:
     - target: {fileID: 2280158511966635237, guid: 70ef143766d048a4fab26a857aeea7ba,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280158511966635238, guid: 70ef143766d048a4fab26a857aeea7ba,
+        type: 3}
+      propertyPath: m_SkinWidth
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2280158511966635238, guid: 70ef143766d048a4fab26a857aeea7ba,
+        type: 3}
+      propertyPath: m_MinMoveDistance
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2280158511966635239, guid: 70ef143766d048a4fab26a857aeea7ba,

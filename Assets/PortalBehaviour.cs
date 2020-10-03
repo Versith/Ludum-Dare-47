@@ -52,14 +52,46 @@ public class PortalBehaviour : MonoBehaviour
             lastTeleportTime = Time.time;
             CharacterController controller = playerCamera.GetComponentInParent<CharacterController>();
             controller.enabled = false;
-            localPlayerPosition = portal.InverseTransformPoint(playerCamera.position);
+            /*localPlayerPosition = portal.InverseTransformPoint(playerCamera.position);
             oppositeNormalOfOtherPortal = portal.transform.up;
-            reflectedPosition = -Vector3.Reflect(localPlayerPosition, oppositeNormalOfOtherPortal);
-            player.position = otherPortal.TransformPoint(reflectedPosition);
+            reflectedPosition = -Vector3.Reflect(localPlayerPosition, oppositeNormalOfOtherPortal);*/
+            //player.position = otherPortal.TransformPoint(reflectedPosition);
 
-            Vector3 playerForwardLocal = portal.InverseTransformVector(player.forward);
+            Vector3 portalToPlayer = player.position - portal.position;
+            Debug.Log(portal.forward);
+            Debug.Log(portal.up);
+            float dotProduct = Vector3.Dot(portal.forward, portalToPlayer);
+
+            //Debug.Log("Dot: " + dotProduct);
+
+            if(dotProduct < 0f)
+            {
+                float rotationDiff = 0f;
+                if (portal.rotation.eulerAngles.y < otherPortal.rotation.eulerAngles.y)
+                {
+                    rotationDiff = Quaternion.Angle(portal.rotation, otherPortal.rotation);
+                }
+                else
+                {
+                    rotationDiff = -Quaternion.Angle(portal.rotation, otherPortal.rotation);
+                }
+                //Debug.Log("Euler: " + otherPortal.rotation.eulerAngles.y);
+                Debug.Log("RotationDiff1: " + rotationDiff);
+                //rotationDiff = Math.Abs(rotationDiff);
+                rotationDiff += 180;//- otherPortal.rotation.eulerAngles.y;
+                Debug.Log("RotationDiff2: " + rotationDiff);
+                player.Rotate(Vector3.up, rotationDiff);
+
+                Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
+                player.position = otherPortal.position + positionOffset;
+                controller.enabled = true;
+                playerIsOverlapping = false;
+            }
+
+            /*Vector3 playerForwardLocal = portal.InverseTransformVector(player.forward);
             newForward = -otherPortal.transform.TransformVector(playerForwardLocal);
             player.transform.forward = new Vector3(newForward.x, -newForward.y, newForward.z);
+            */
 
             controller.enabled = true;
             playerIsOverlapping = false;
