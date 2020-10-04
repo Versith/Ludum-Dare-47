@@ -632,6 +632,31 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 30121481}
+    - target: {fileID: 8986762456594550886, guid: 56cb1ebc5ee077d438b941b73e4c5788,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986762456665047303, guid: 56cb1ebc5ee077d438b941b73e4c5788,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986762456665047303, guid: 56cb1ebc5ee077d438b941b73e4c5788,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.17364816
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986762456665047303, guid: 56cb1ebc5ee077d438b941b73e4c5788,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9848078
+      objectReference: {fileID: 0}
+    - target: {fileID: 8986762456665047303, guid: 56cb1ebc5ee077d438b941b73e4c5788,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8986762457335820811, guid: 56cb1ebc5ee077d438b941b73e4c5788,
         type: 3}
       propertyPath: playerCamera
