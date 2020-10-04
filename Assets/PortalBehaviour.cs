@@ -67,14 +67,15 @@ public class PortalBehaviour : MonoBehaviour
             if(dotProduct < 0f)
             {
                 float rotationDiff = 0f;
-                if (portal.rotation.eulerAngles.y < otherPortal.rotation.eulerAngles.y)
+                /*if (portal.rotation.eulerAngles.y > otherPortal.rotation.eulerAngles.y)
                 {
                     rotationDiff = Quaternion.Angle(portal.rotation, otherPortal.rotation);
                 }
                 else
                 {
                     rotationDiff = -Quaternion.Angle(portal.rotation, otherPortal.rotation);
-                }
+                }*/
+                rotationDiff = otherPortal.rotation.eulerAngles.y - portal.rotation.eulerAngles.y;
                 //Debug.Log("Euler: " + otherPortal.rotation.eulerAngles.y);
                 Debug.Log("RotationDiff1: " + rotationDiff);
                 //rotationDiff = Math.Abs(rotationDiff);
