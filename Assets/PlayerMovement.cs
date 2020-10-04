@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 12f;
+    [SerializeField] private float _slowDownPercentage = 1f;
     [SerializeField] private float _gravity = -9.81f;
     [SerializeField] private float _jumpHeight = 3f;
     [SerializeField] private float _jumpBufferLength = 0.1f;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _controller;
 
     private Vector3 _velocity;
+    private float _currentSpeed;
     private bool isGrounded = false;
     private float _lastPlatformExit;
     private float _baseSlopeLimit;
@@ -31,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _controller = transform.GetComponent<CharacterController>();
         _baseSlopeLimit = _controller.slopeLimit;
+        _currentSpeed = _moveSpeed;
     }
 
     // Update is called once per frame
@@ -75,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
             Vector3 move = transform.right * x + transform.forward * z;
 
-            _controller.Move(move * _moveSpeed * Time.deltaTime);
+            _controller.Move(move * _currentSpeed * Time.deltaTime);
         }
 
         if(Input.GetButtonDown("Jump"))
@@ -102,5 +105,15 @@ public class PlayerMovement : MonoBehaviour
         isPushed = true;
         _pushDirection = direction;
         _pushForce = force;
+    }
+
+    public void ResetSpeed()
+    {
+        _currentSpeed = _moveSpeed;
+    }
+
+    public void Slower()
+    {
+        _currentSpeed *= _slowDownPercentage;
     }
 }

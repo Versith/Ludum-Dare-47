@@ -9,6 +9,12 @@ public class AttachToPlatform : MonoBehaviour
     [SerializeField] private LayerMask _groundMask;
 
     private bool isAttached = false;
+    private PlayerMovement _movement;
+
+    private void Start()
+    {
+        _movement = transform.GetComponent<PlayerMovement>();
+    }
 
     private void Update()
     {
@@ -22,12 +28,14 @@ public class AttachToPlatform : MonoBehaviour
                 transform.SetParent(hit.transform);
                 isAttached = true;
                 attachedNow = true;
+                _movement.Slower();
             }
         }
 
         if(!attachedNow)
         {
             transform.SetParent(null);
+            _movement.ResetSpeed();
         }
     }
 }
