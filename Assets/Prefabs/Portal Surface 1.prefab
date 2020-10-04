@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4734192799601857713}
   - component: {fileID: 4734192799601857714}
   - component: {fileID: 4734192799601857717}
+  - component: {fileID: 196718494223194598}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -91,7 +92,7 @@ MeshCollider:
   m_GameObject: {fileID: 4734192799601857727}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
@@ -129,6 +130,19 @@ MonoBehaviour:
   otherPortal: {fileID: 0}
   portalCamera: {fileID: 4734192799893431147}
   isActive: 1
+--- !u!65 &196718494223194598
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734192799601857727}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.000005, y: 0, z: 10.000002}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4734192800153142450
 GameObject:
   m_ObjectHideFlags: 0
