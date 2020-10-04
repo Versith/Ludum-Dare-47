@@ -6,6 +6,8 @@ public class PathFollower : MonoBehaviour, Construct
 {
     [SerializeField] private Transform _pathParent;
     [SerializeField] private string _behaviour; // bounce, loop, stop
+    [SerializeField] private float _delay = 0;
+    [SerializeField] private float _speed = 1;
     [SerializeField] private bool _active = false;
 
     private Transform[] _path;
@@ -14,6 +16,7 @@ public class PathFollower : MonoBehaviour, Construct
     private int _currentNode = 0;
     private float _progress = 0;
     private bool isFinished = false;
+    private float _windUp;
 
     // Start is called before the first frame update
     void Start()
@@ -25,16 +28,17 @@ public class PathFollower : MonoBehaviour, Construct
         System.Array.Copy(tempPath, 1, _initialPath, 0, tempPath.Length - 1);
 
         _initialTransform = transform;
+        _windUp = Time.time + _delay;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(_active)
+        if(_active && Time.time > _windUp)
         {
             if (_behaviour == "Loop")
             {
-                _progress += Time.deltaTime;
+                _progress += _speed * Time.deltaTime;
                 if (_currentNode + 1 >= _path.Length)
                 {
                     transform.position = Vector3.Lerp(_path[_currentNode].position, _path[0].position, _progress);
@@ -60,7 +64,7 @@ public class PathFollower : MonoBehaviour, Construct
             }
             else if (_behaviour == "Bounce")
             {
-                _progress += Time.deltaTime;
+                _progress += _speed * Time.deltaTime;
 
                 transform.position = Vector3.Lerp(_path[_currentNode].position, _path[_currentNode + 1].position, _progress);
                 transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[_currentNode + 1].rotation, _progress);
@@ -79,7 +83,7 @@ public class PathFollower : MonoBehaviour, Construct
             }
             else if (_behaviour == "Stop" && !isFinished)
             {
-                _progress += Time.deltaTime;
+                _progress += _speed * Time.deltaTime;
                 if (!(_currentNode + 1 >= _path.Length))
                 {
                     transform.position = Vector3.Lerp(_path[_currentNode].position, _path[_currentNode + 1].position, _progress);
@@ -94,9 +98,14 @@ public class PathFollower : MonoBehaviour, Construct
                     {
                         isFinished = true;
                         _currentNode = 0;
+                        ResetConstruct();
                     }
                 }
             }
+        }
+        else if(!_active)
+        {
+            _windUp = Time.time + _delay;
         }
 
     }

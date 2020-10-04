@@ -14,7 +14,11 @@ GameObject:
   - component: {fileID: 4734192799601857713}
   - component: {fileID: 4734192799601857714}
   - component: {fileID: 4734192799601857717}
+<<<<<<< HEAD
+  - component: {fileID: 2145846909}
+=======
   - component: {fileID: 196718494223194598}
+>>>>>>> 65b662deeb1f24a9a9729bc923ba73d30b14943b
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -130,7 +134,11 @@ MonoBehaviour:
   otherPortal: {fileID: 0}
   portalCamera: {fileID: 4734192799893431147}
   isActive: 1
+<<<<<<< HEAD
+--- !u!65 &2145846909
+=======
 --- !u!65 &196718494223194598
+>>>>>>> 65b662deeb1f24a9a9729bc923ba73d30b14943b
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,7 +149,11 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
+<<<<<<< HEAD
   m_Size: {x: 10.000005, y: 0, z: 10}
+=======
+  m_Size: {x: 10.000005, y: 0, z: 10.000002}
+>>>>>>> 65b662deeb1f24a9a9729bc923ba73d30b14943b
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4734192800153142450
 GameObject:
