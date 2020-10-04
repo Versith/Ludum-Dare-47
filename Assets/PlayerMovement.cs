@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed = 12f;
     [SerializeField] private float _gravity = -9.81f;
     [SerializeField] private float _jumpHeight = 3f;
+    [SerializeField] private float _jumpBufferLength = 0.1f;
     [SerializeField] private float _coyoteTime = 0.1f;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundDistance = 0.4f;
@@ -18,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded = false;
     private float _lastPlatformExit;
     private float _baseSlopeLimit;
+
+    private float _jumpBuffer;
 
     private bool isPushed = false;
     private Vector3 _pushDirection;
@@ -39,6 +42,12 @@ public class PlayerMovement : MonoBehaviour
         {
             _lastPlatformExit = Time.time;
             _controller.slopeLimit = _baseSlopeLimit;
+
+            if(Time.time < _jumpBuffer)
+            {
+                _velocity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
+                _controller.slopeLimit = 90;
+            }
         }
         else
         {
@@ -69,10 +78,18 @@ public class PlayerMovement : MonoBehaviour
             _controller.Move(move * _moveSpeed * Time.deltaTime);
         }
 
-        if(Input.GetButtonDown("Jump") && (Time.time < _lastPlatformExit + _coyoteTime))
+        if(Input.GetButtonDown("Jump"))
         {
-            _velocity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
-            _controller.slopeLimit = 90;
+            if(Time.time < _lastPlatformExit + _coyoteTime)
+            {
+                _velocity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
+                _controller.slopeLimit = 90;
+            }
+            else
+            {
+                _jumpBuffer = Time.time + _jumpBufferLength;
+            }
+
         }
 
         _velocity.y += _gravity * Time.deltaTime;

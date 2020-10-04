@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFollower : MonoBehaviour
+public class PathFollower : MonoBehaviour, Construct
 {
     [SerializeField] private Transform _pathParent;
     [SerializeField] private string _behaviour; // bounce, loop, stop
+    [SerializeField] private bool _active = false;
 
     private Transform[] _path;
+    private Transform[] _initialPath;
+    private Transform _initialTransform;
     private int _currentNode = 0;
     private float _progress = 0;
     private bool isFinished = false;
@@ -17,73 +20,101 @@ public class PathFollower : MonoBehaviour
     {
         Transform[] tempPath = _pathParent.GetComponentsInChildren<Transform>();
         _path = new Transform[tempPath.Length - 1];
+        _initialPath = new Transform[tempPath.Length - 1];
         System.Array.Copy(tempPath, 1, _path, 0, tempPath.Length - 1);
+        System.Array.Copy(tempPath, 1, _initialPath, 0, tempPath.Length - 1);
+
+        _initialTransform = transform;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(_behaviour == "Loop")
+        if(_active)
         {
-            _progress += Time.deltaTime;
-            if (_currentNode + 1 >= _path.Length)
+            if (_behaviour == "Loop")
             {
-                transform.position = Vector3.Lerp(_path[_currentNode].position, _path[0].position, _progress);
-                transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[0].rotation, _progress);
+                _progress += Time.deltaTime;
+                if (_currentNode + 1 >= _path.Length)
+                {
+                    transform.position = Vector3.Lerp(_path[_currentNode].position, _path[0].position, _progress);
+                    transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[0].rotation, _progress);
+                    transform.localScale = Vector3.Lerp(_path[_currentNode].localScale, _path[0].localScale, _progress);
+                }
+                else
+                {
+                    transform.position = Vector3.Lerp(_path[_currentNode].position, _path[_currentNode + 1].position, _progress);
+                    transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[_currentNode + 1].rotation, _progress);
+                    transform.localScale = Vector3.Lerp(_path[_currentNode].localScale, _path[_currentNode + 1].localScale, _progress);
+                }
+                if (_progress >= 1)
+                {
+                    _progress = 0;
+                    _currentNode++;
+                    if (_currentNode >= _path.Length)
+                    {
+                        _currentNode = 0;
+                    }
+                }
+
             }
-            else
+            else if (_behaviour == "Bounce")
             {
+                _progress += Time.deltaTime;
+
                 transform.position = Vector3.Lerp(_path[_currentNode].position, _path[_currentNode + 1].position, _progress);
                 transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[_currentNode + 1].rotation, _progress);
-            }
-            if(_progress >= 1)
-            {
-                _progress = 0;
-                _currentNode++;
-                if(_currentNode >= _path.Length)
+                transform.localScale = Vector3.Lerp(_path[_currentNode].localScale, _path[_currentNode + 1].localScale, _progress);
+
+                if (_progress >= 1)
                 {
-                    _currentNode = 0;
+                    _progress = 0;
+                    _currentNode++;
+                    if (_currentNode >= _path.Length - 1)
+                    {
+                        _currentNode = 0;
+                        System.Array.Reverse(_path);
+                    }
                 }
             }
-
-        }
-        else if(_behaviour == "Bounce")
-        {
-            _progress += Time.deltaTime;
-
-            transform.position = Vector3.Lerp(_path[_currentNode].position, _path[_currentNode + 1].position, _progress);
-            transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[_currentNode + 1].rotation, _progress);
-
-            if (_progress >= 1)
+            else if (_behaviour == "Stop" && !isFinished)
             {
-                _progress = 0;
-                _currentNode++;
-                if (_currentNode >= _path.Length - 1)
+                _progress += Time.deltaTime;
+                if (!(_currentNode + 1 >= _path.Length))
                 {
-                    _currentNode = 0;
-                    System.Array.Reverse(_path);
+                    transform.position = Vector3.Lerp(_path[_currentNode].position, _path[_currentNode + 1].position, _progress);
+                    transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[_currentNode + 1].rotation, _progress);
+                    transform.localScale = Vector3.Lerp(_path[_currentNode].localScale, _path[_currentNode + 1].localScale, _progress);
                 }
-            }
-        }
-        else if(_behaviour == "Stop" && !isFinished)
-        {
-            _progress += Time.deltaTime;
-            if(!(_currentNode + 1 >= _path.Length))
-            {
-                transform.position = Vector3.Lerp(_path[_currentNode].position, _path[_currentNode + 1].position, _progress);
-                transform.rotation = Quaternion.Lerp(_path[_currentNode].rotation, _path[_currentNode + 1].rotation, _progress);
-            }
-            if (_progress >= 1)
-            {
-                _progress = 0;
-                _currentNode++;
-                if (_currentNode >= _path.Length)
+                if (_progress >= 1)
                 {
-                    isFinished = true;
-                    _currentNode = 0;
+                    _progress = 0;
+                    _currentNode++;
+                    if (_currentNode >= _path.Length)
+                    {
+                        isFinished = true;
+                        _currentNode = 0;
+                    }
                 }
             }
         }
 
+    }
+
+    public void ResetConstruct()
+    {
+        _active = false;
+        _currentNode = 0;
+        _progress = 0;
+        isFinished = false;
+        _path = _initialPath;
+        transform.position = _initialTransform.position;
+        transform.rotation = _initialTransform.rotation;
+        transform.localScale = _initialTransform.localScale;
+    }
+
+    public void StartConstruct()
+    {
+        _active = true;
     }
 }
