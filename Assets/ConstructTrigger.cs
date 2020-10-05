@@ -7,6 +7,7 @@ public class ConstructTrigger : MonoBehaviour
     [SerializeField] private Transform _object;
 
     private Construct _construct;
+    private bool isTriggered = false;
 
     private void Start()
     {
@@ -15,6 +16,15 @@ public class ConstructTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _construct.StartConstruct();
+        if(!isTriggered)
+        {
+            _construct.StartConstruct();
+            isTriggered = true;
+        }
+    }
+
+    public void ResetTrigger()
+    {
+        isTriggered = false;
     }
 }

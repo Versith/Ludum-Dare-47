@@ -28,14 +28,12 @@ public class AttachToPlatform : MonoBehaviour
                 transform.SetParent(hit.transform);
                 isAttached = true;
                 attachedNow = true;
-                _movement.Slower();
             }
         }
 
         if(!attachedNow)
         {
             transform.SetParent(null);
-            _movement.ResetSpeed();
         }
     }
 }
