@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +23,7 @@ public class DialogController : MonoBehaviour
 
     [SerializeField] GameObject _messageText;
     [SerializeField] Image _textBoxImage;
-    Color _textBoxImageColor;
+    float _textBoxImageAlpha;
 
     LinkedList<Message> _messageList = new LinkedList<Message>();
 
@@ -34,7 +33,7 @@ public class DialogController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _textBoxImageColor = _textBoxImage.color;
+        _textBoxImageAlpha = _textBoxImage.color.a;
         _messageList.AddFirst(new Message("It is good to get a sound impression of your surroundings. But I think you'll get to see this room a couple of times anyway.", 2f));
     }
 
@@ -45,8 +44,6 @@ public class DialogController : MonoBehaviour
         if (_nextTextTime <= Time.time && !_textFading && _messageList.Count != 0)
         {
             StopCoroutine("WaitForFadingEnd");
-            text.alpha = 1f;
-            _textBoxImage.color = _textBoxImageColor;
             Debug.Log("ShowMessage");
             Message currentMessage = _messageList.First.Value;
             Debug.Log(currentMessage);
@@ -98,7 +95,8 @@ public class DialogController : MonoBehaviour
     {
         TextMeshProUGUI text = _messageText.GetComponent<TextMeshProUGUI>();
         text.text = message;
-        _textBoxImage.color = _textBoxImageColor;
+        text.CrossFadeAlpha(255f, 0.5f, false);
+        _textBoxImage.CrossFadeAlpha(_textBoxImageAlpha, 0.2f, false);
         Debug.Log("UpdateText: " + message);
     }
 
