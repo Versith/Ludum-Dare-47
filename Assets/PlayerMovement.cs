@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private float _groundDistance = 0.4f;
     [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private AudioClip _bonk;
+    [SerializeField] private AudioClip[] _fallSounds;
+    [SerializeField] private float _jumpSoundDelay = 0.3f;
 
     private CharacterController _controller;
 
@@ -27,10 +30,16 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _pushDirection;
     private float _pushForce;
 
+    private bool _playSoundFlag = false;
+    private float _lastGrounded;
+
+    private AudioSource _audio;
+
     // Start is called before the first frame update
     void Start()
     {
         _controller = transform.GetComponent<CharacterController>();
+        _audio = transform.GetComponent<AudioSource>();
         _baseSlopeLimit = _controller.slopeLimit;
     }
 
@@ -41,6 +50,17 @@ public class PlayerMovement : MonoBehaviour
 
         if(isGrounded)
         {
+            if(_playSoundFlag && Time.time > _lastGrounded + _jumpSoundDelay)
+            {
+                _playSoundFlag = false;
+                _audio.clip = _fallSounds[Random.Range(0, _fallSounds.Length)];
+                _audio.Play();
+            }
+            else
+            {
+                _playSoundFlag = false;
+            }
+
             _lastPlatformExit = Time.time;
             _controller.slopeLimit = _baseSlopeLimit;
 
@@ -53,6 +73,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+            if(!_playSoundFlag)
+            {
+                _lastGrounded = Time.time;
+                _playSoundFlag = true;
+            }
         }
 
         if(isGrounded && _velocity.y < 0)
@@ -108,5 +133,8 @@ public class PlayerMovement : MonoBehaviour
         isPushed = true;
         _pushDirection = direction;
         _pushForce = force;
+        // Play sound
+        _audio.clip = _bonk;
+        _audio.Play();
     }
 }
