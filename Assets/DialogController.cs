@@ -333,7 +333,6 @@ public class DialogController : MonoBehaviour
 
     List<Message> _PlattformFallMessages = new List<Message>()
     {
-        new Message("Now you're falling at the second obstacle.", 2f),
         new Message("Maybe it is easier to rush through and leave the problem behind.", 2f),
         new Message("With a little bit of practise you may get what you want every time.", 2f),
         new Message("Why don't you learn from your mistakes? The right path is directly in front of you?", 2f),
