@@ -96,6 +96,11 @@ public class PlayerMovement : MonoBehaviour
         _velocity.y += _gravity * Time.deltaTime;
 
         _controller.Move(_velocity * Time.deltaTime);
+
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            transform.GetComponent<QuitScript>().QuitGame();
+        }
     }
 
     public void GetPushed(Vector3 direction, float force)

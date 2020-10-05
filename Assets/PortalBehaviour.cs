@@ -97,8 +97,6 @@ public class PortalBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigegr");
-
         if (other.tag == "Player")
         {
             playerIsOverlapping = true;

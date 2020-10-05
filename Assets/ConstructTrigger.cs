@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConstructTrigger : MonoBehaviour
+public class ConstructTrigger : MonoBehaviour, Construct
 {
     [SerializeField] private Transform _object;
 
@@ -23,7 +23,12 @@ public class ConstructTrigger : MonoBehaviour
         }
     }
 
-    public void ResetTrigger()
+    public void ResetConstruct()
+    {
+        isTriggered = false;
+    }
+
+    public void StartConstruct()
     {
         isTriggered = false;
     }
