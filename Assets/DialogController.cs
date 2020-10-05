@@ -112,7 +112,7 @@ public class DialogController : MonoBehaviour
     bool _showPortalText = true;
     public void HandleTrigger(string triggerName)
     {
-        if (triggerName.Contains("Fall") && _showPortalText)
+        if (triggerName.Contains("Fall") && _showPortalText && !triggerName.Equals("HammerRoomFall"))
         {
             StartRoomTrigger();
             _showPortalText = false;
