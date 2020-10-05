@@ -17155,6 +17155,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: ExitPortal
       objectReference: {fileID: 0}
+    - target: {fileID: 8986762456416419432, guid: 56cb1ebc5ee077d438b941b73e4c5788,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8986762456580976228, guid: 56cb1ebc5ee077d438b941b73e4c5788,
         type: 3}
       propertyPath: playerCamera
