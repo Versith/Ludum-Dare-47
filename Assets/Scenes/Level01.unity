@@ -34618,7 +34618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pathParent: {fileID: 1517891660}
   _behaviour: Stop
-  _delay: 1
+  _delay: 0.7
   _speed: 3
   _active: 0
 --- !u!64 &1119136868
