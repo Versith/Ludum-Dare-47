@@ -130,11 +130,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void GetPushed(Vector3 direction, float force)
     {
-        isPushed = true;
-        _pushDirection = direction;
-        _pushForce = force;
-        // Play sound
-        _audio.clip = _bonk;
-        _audio.Play();
+        if (!isPushed)
+        {
+            isPushed = true;
+            _pushDirection = direction;
+            _pushForce = force;
+            // Play sound
+            _audio.clip = _bonk;
+            _audio.Play();
+        }
     }
 }
