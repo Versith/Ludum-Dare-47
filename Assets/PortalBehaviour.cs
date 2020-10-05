@@ -58,8 +58,6 @@ public class PortalBehaviour : MonoBehaviour
             //player.position = otherPortal.TransformPoint(reflectedPosition);
 
             Vector3 portalToPlayer = player.position - portal.position;
-            Debug.Log(portal.forward);
-            Debug.Log(portal.up);
             float dotProduct = Vector3.Dot(portal.forward, portalToPlayer);
 
             //Debug.Log("Dot: " + dotProduct);
@@ -77,10 +75,8 @@ public class PortalBehaviour : MonoBehaviour
                 }*/
                 rotationDiff = otherPortal.rotation.eulerAngles.y - portal.rotation.eulerAngles.y;
                 //Debug.Log("Euler: " + otherPortal.rotation.eulerAngles.y);
-                Debug.Log("RotationDiff1: " + rotationDiff);
                 //rotationDiff = Math.Abs(rotationDiff);
                 rotationDiff += 180;//- otherPortal.rotation.eulerAngles.y;
-                Debug.Log("RotationDiff2: " + rotationDiff);
                 player.Rotate(Vector3.up, rotationDiff);
 
                 Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
