@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TextTrigger : MonoBehaviour
 {
-    [SerializeField] private Queue<string> _texts = new Queue<string>();
-    [SerializeField] private Queue<float> _delays = new Queue<float>();
+    [SerializeField] private string _triggerName;
+    private bool _triggerActive = true;
 
     protected DialogController _dialogController;
 
@@ -16,9 +16,18 @@ public class TextTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" && _triggerActive)
         {
-            _dialogController.QueueText(new Message(_texts.Dequeue(), _delays.Dequeue()));
+            _triggerActive = false;
+            StopCoroutine("ResetActive");
+            StartCoroutine("ResetActive");
+            _dialogController.HandleTrigger(_triggerName);
         }
+    }
+
+    IEnumerator ResetActive()
+    {
+        yield return new WaitForSeconds(2f);
+        _triggerActive = true;
     }
 }
