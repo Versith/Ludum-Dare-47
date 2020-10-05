@@ -11,14 +11,16 @@ public class Hammer : MonoBehaviour, Construct
     [SerializeField] private bool _active = false;
 
     private float _yRotation;    
-    private Transform _initialTransform;
+    private Vector3 _initialPosition;
+    private Quaternion _initialRotation;
     private float _windUp;
 
     // Start is called before the first frame update
     void Start()
     {
         _yRotation = transform.eulerAngles.y;
-        _initialTransform = transform;
+        _initialPosition = transform.position;
+        _initialRotation = transform.rotation;
         _windUp = Time.time + _delay;
     }
 
@@ -50,9 +52,8 @@ public class Hammer : MonoBehaviour, Construct
     public void ResetConstruct()
     {
         _active = false;
-        transform.position = _initialTransform.position;
-        transform.rotation = _initialTransform.rotation;
-        transform.localScale = _initialTransform.localScale;
+        transform.position = _initialPosition;
+        transform.rotation = _initialRotation;
     }
 
     public void StartConstruct()

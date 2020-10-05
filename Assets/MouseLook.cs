@@ -15,6 +15,7 @@ public class MouseLook : MonoBehaviour
     {
         _playerBody = transform.parent;
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
