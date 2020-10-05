@@ -35,7 +35,7 @@ public class DialogController : MonoBehaviour
     void Start()
     {
         _textBoxImageAlpha = _textBoxImage.color.a;
-        //_messageList.AddFirst(new Message("It is good to get a sound impression of your surroundings. But I think you'll get to see this room a couple of times anyway.", 2f));
+        _messageList.AddFirst(new Message("Hello. I hope you don't mind me watching you. Although you can try to ignore me.", 3f));
     }
 
     // Update is called once per frame
@@ -137,7 +137,33 @@ public class DialogController : MonoBehaviour
             case "HammerRoomCompletion":
                 HammerRoomCompletion();
                 break;
+            case "PlattformPush":
+                PlattformPush();
+                break;
+            case "PlattformDrop":
+                PlattformDrop();
+                break;
             default: break;
+        }
+    }
+
+    private bool _plattformDropToggle = true;
+    private void PlattformDrop()
+    {
+        if (_plattformDropToggle)
+        {
+            _plattformDropToggle = false;
+            _messageList.AddFirst(new Message("There are many unstable things around. Sometimes it is even the floor we try to stand on.", 2f));
+        }
+    }
+
+    private bool _plattformPushToggle = true;
+    private void PlattformPush()
+    {
+        if (_plattformPushToggle)
+        {
+            _plattformPushToggle = false;
+            _messageList.AddFirst(new Message("Other times we just get pushed down.", 2f));
         }
     }
 
@@ -145,11 +171,17 @@ public class DialogController : MonoBehaviour
     {
         new Message("It is good to get a sound impression of your surroundings. But I think you'll get to see this room a couple of times anyway.", 2f),
         new Message("Sometimes we fail and the only way forward is to start all over again", 2f),
-        new Message("Isn't it comforting to get back to a familiar place?", 2f),
+        new Message("All you see is grey. At least there is something to see.", 2f),
         new Message("Do you feel alone? After all there is nobody here, besides me.", 2f),
+        new Message("Isn't it comforting to get back to a familiar place?", 2f),
         new Message("Frustration is something we all feel from time to time. Are you frustrated yet?", 2f),
         new Message("Even though we all feel frustrated, it is not a good guide to archive a goal.  What is your goal anyway? Do you know why you're trying again and again, just to keep failing?", 3f),
+        new Message("Do you know the two types of frustration?", 2f),
+        new Message("Internal frustration comes from within. It is the result of your inability to archive your self imposed goals", 3f),
+        new Message("External frustration is caused by circumstances that are out of your control. Hazzards on your way, put there by other people", 3f),
+        new Message("I thought about it. Internal or external, knowing the difference doesn't change anything.", 2f),
         new Message("And yet another time back to where you started.", 2f),
+        new Message("If you're honest, there isn't a reason to keep trying. Just stop and lie down. You don't have the energy to keep going.", 3f),
 
     };
 
@@ -213,16 +245,25 @@ public class DialogController : MonoBehaviour
     private void EndPortalTrigger()
     {
         _StartroomMessages = new List<Message>();
+        _PlattformFallMessages = new List<Message>();
+        _HammerFallMessages = new List<Message>();
+        _HammerRoomFallMessages = new List<Message>();
+        _RotationRoom1FallMessages = new List<Message>();
+        _RotationRoom2FallMessages = new List<Message>();
+
         _messageList.AddLast(new Message("Although you made it, in the end all your effords are in vain.", 2f));
         _messageList.AddLast(new Message("You didn't archive anything. Now you just are back to the beginning. But did you expect otherwise?", 2f));
-
+        _messageList.AddLast(new Message("Will you continue the cycle or do you decide to leave everything behind?", 2f));
     }
 
 
     List<Message> _RotationRoom2FallMessages = new List<Message>()
     {
-        new Message("You made it further than before.", 2f),
+        new Message("You made it further than before. That's a good thing.", 2f),
         new Message("Just a little bit until you reach the other side.", 2f),
+        new Message("Maybe you can make it.", 2f),
+        new Message("I had hope, but now you're failing again.", 2f),
+        new Message("Do you even deserve to make it to the end?", 2f),
         new Message("Why do you keep trying?", 2f),
         new Message("There is nothing more to say, if you don't want to give up.", 2f),
     };
@@ -243,6 +284,12 @@ public class DialogController : MonoBehaviour
         new Message("What do you think? How many times do you have to try? Can you even make it?", 2f),
         new Message("You can always take the easy way out.", 2f),
         new Message("So you didn't just quit?", 2f),
+        new Message("You surly can't make it.", 1f),
+        new Message("I'm sure other people enjoy what they're doing. Do you still know what it means to enjoy something?", 2f),
+        new Message("Are you at a point, where you don't even know what to do anymore?", 2f),
+        new Message("You drag yourself back up just to continue to suffer.", 2f),
+        new Message("Life isn't fair. It never has been.", 2f),
+
     };
 
     private void RotationRoom1FallTrigger()
@@ -255,14 +302,37 @@ public class DialogController : MonoBehaviour
         }
     }
 
+    List<Message> _HammerRoomFallMessages = new List<Message>()
+    {
+        new Message("How unfair. This isn't a question of skill. There is nothing you can do to better the outcome.", 2f),
+        new Message("Now there is only one option left.", 2f),
+        new Message("Some say it is madness to do the same thing, while expecting a different result.", 2f),
+    };
     private void HammerRoomFallTrigger()
     {
-        throw new NotImplementedException();
+        if (_HammerRoomFallMessages.Count != 0)
+        {
+            Message message = _HammerRoomFallMessages.ElementAt(0);
+            _HammerRoomFallMessages.RemoveAt(0);
+            _messageList.AddLast(message);
+        }
     }
 
+    List<Message> _PlattformFallMessages = new List<Message>()
+    {
+        new Message("Now you're falling at the second obstacle", 2f),
+        new Message("Maybe it is easier ro rush through and leave the problem behind.", 2f),
+        new Message("With a little bit of practise you may get what you want every time.", 2f),
+        new Message("Why don't you learn from your mistakes? The right path is directly in front of you?", 2f),
+    };
     private void PlattformFallTrigger()
     {
-        throw new NotImplementedException();
+        if (_PlattformFallMessages.Count != 0 && _messageList.Count == 0)
+        {
+            Message message = _PlattformFallMessages.ElementAt(0);
+            _PlattformFallMessages.RemoveAt(0);
+            _messageList.AddLast(message);
+        }
     }
 
 }
